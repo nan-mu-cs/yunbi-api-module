@@ -49,7 +49,7 @@ var yunbi = new Yunbi(token.accessKey,token.secretKey);
 // });
 
 
-//private api
+//private get api
 // yunbi.getDeposits("btc",{},function (error,data) {
 //     console.log("getDeposits");
 //     console.log(data);
@@ -84,3 +84,22 @@ var yunbi = new Yunbi(token.accessKey,token.secretKey);
 //     console.log("getAccountTrades");
 //     console.log(data);
 // });
+
+
+// private post api
+
+
+// yunbi.cancelAllOrders({},function (error,data) {
+//     console.log("cancelAllOrders");
+//     console.log(data);
+// });
+
+// yunbi.cancelOrder("452416228",function (error,data) {
+//    console.log("cancelOrder");
+//    console.log(data);
+// });
+// yunbi.createOrder("eoscny","sell","10","30",{},function (error,data) {
+//    console.log("createOrder");
+//    console.log(data);
+// });
+

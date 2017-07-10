@@ -58,11 +58,7 @@ class YunbiAPI {
                 UserAgent: this.USER_AGENT
             }
         };
-        if (method === "GET") {
-            options["url"] = `${this.host}/${path}?${paramString}`;
-        } else if (method === "POST") {
-            options["form"] = parameters
-        }
+        options["url"] = `${this.host}/${path}?${paramString}`;
         this._request(options, callback);
     }
 
@@ -79,7 +75,7 @@ class YunbiAPI {
     //public api
 
     getTicker(marketId, callback) {
-        this._publicRequest(`/api/v2/tickers/${marketId}.json`,{}, callback);
+        this._publicRequest(`/api/v2/tickers/${marketId}.json`, {}, callback);
     }
 
     getAllTicker(callback) {
@@ -109,39 +105,60 @@ class YunbiAPI {
         this._publicRequest("/api/v2/depth.json", parameters, callback);
     }
 
-    getK(market,options,callback){
+    getK(market, options, callback) {
         let parameters = Object.assign({}, {market}, options);
-        this._publicRequest("/api/v2/k.json",parameters,callback);
+        this._publicRequest("/api/v2/k.json", parameters, callback);
     }
 
-    getKPendingTrades(market,trade_id,options,callback){
-        let parameters = Object.assign({}, {market,trade_id}, options);
-        this._publicRequest("/api/v2/k_with_pending_trades.json",parameters,callback);
+    getKPendingTrades(market, trade_id, options, callback) {
+        let parameters = Object.assign({}, {market, trade_id}, options);
+        this._publicRequest("/api/v2/k_with_pending_trades.json", parameters, callback);
     }
 
     //private get api
-    getDeposits(currency,options,callback){
-        this._privateRequest("GET","/api/v2/deposits",{currency},{},callback);
+    getDeposits(currency, options, callback) {
+        this._privateRequest("GET", "/api/v2/deposits", {currency}, {}, callback);
     }
-    getAccount(callback){
-        this._privateRequest("GET","/api/v2/members/me.json",{},{},callback);
+
+    getAccount(callback) {
+        this._privateRequest("GET", "/api/v2/members/me.json", {}, {}, callback);
     }
-    getDeposit(txid,callback){
-        this._privateRequest("GET","/api/v2/deposit.json",{txid},{},callback);
+
+    getDeposit(txid, callback) {
+        this._privateRequest("GET", "/api/v2/deposit.json", {txid}, {}, callback);
     }
-    getDepositAddress(currency,callback){
-        this._privateRequest("GET","/api/v2/deposit_address.json",{currency},{},callback);
+
+    getDepositAddress(currency, callback) {
+        this._privateRequest("GET", "/api/v2/deposit_address.json", {currency}, {}, callback);
     }
-    getOrders(market,options,callback){
-        let parameters = Object.assign({market},options);
-        this._privateRequest("GET","/api/v2/orders.json",parameters,{},callback);
+
+    getOrders(market, options, callback) {
+        let parameters = Object.assign({market}, options);
+        this._privateRequest("GET", "/api/v2/orders.json", parameters, {}, callback);
     }
-    getOrder(id,callback){
-        this._privateRequest("GET","/api/v2/order.json",{id},{},callback);
+
+    getOrder(id, callback) {
+        this._privateRequest("GET", "/api/v2/order.json", {id}, {}, callback);
     }
-    getAccountTrades(market,options,callback){
-        let parameters = Object.assign({market},options);
-        this._privateRequest("GET","/api/v2/trades/my.json",parameters,{},callback);
+
+    getAccountTrades(market, options, callback) {
+        let parameters = Object.assign({market}, options);
+        this._privateRequest("GET", "/api/v2/trades/my.json", parameters, {}, callback);
+    }
+
+    //private post api
+
+    cancelAllOrders(options,callback){
+        this._privateRequest("POST","/api/v2/orders/clear.json",options,{},callback);
+    }
+    cancelOrder(id,callback){
+        this._privateRequest("POST","/api/v2/order/delete.json",{id},{},callback);
+    }
+    createOrder(market,side,volume,price,options,callback){
+        let parameters = Object.assign({
+            market,side,volume,price
+        },options);
+        this._privateRequest("POST","/api/v2/orders.json",parameters,{},callback);
     }
 }
 

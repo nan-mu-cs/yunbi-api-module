@@ -86,11 +86,7 @@ var YunbiAPI = function () {
                     UserAgent: this.USER_AGENT
                 }
             };
-            if (method === "GET") {
-                options["url"] = this.host + "/" + path + "?" + paramString;
-            } else if (method === "POST") {
-                options["form"] = parameters;
-            }
+            options["url"] = this.host + "/" + path + "?" + paramString;
             this._request(options, callback);
         }
     }, {
@@ -195,6 +191,27 @@ var YunbiAPI = function () {
         value: function getAccountTrades(market, options, callback) {
             var parameters = Object.assign({ market: market }, options);
             this._privateRequest("GET", "/api/v2/trades/my.json", parameters, {}, callback);
+        }
+
+        //private post api
+
+    }, {
+        key: "cancelAllOrders",
+        value: function cancelAllOrders(options, callback) {
+            this._privateRequest("POST", "/api/v2/orders/clear.json", options, {}, callback);
+        }
+    }, {
+        key: "cancelOrder",
+        value: function cancelOrder(id, callback) {
+            this._privateRequest("POST", "/api/v2/order/delete.json", { id: id }, {}, callback);
+        }
+    }, {
+        key: "createOrder",
+        value: function createOrder(market, side, volume, price, options, callback) {
+            var parameters = Object.assign({
+                market: market, side: side, volume: volume, price: price
+            }, options);
+            this._privateRequest("POST", "/api/v2/orders.json", parameters, {}, callback);
         }
     }]);
 
