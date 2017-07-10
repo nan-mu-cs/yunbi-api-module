@@ -1,5 +1,5 @@
 {
-  "name": "yunbi-api",
+  "name": "yunbi-api-module",
   "version": "1.0.0",
   "description": "",
   "main": "./distribution/index.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yangkai2g7k/yunbi-api"
+    "url": "https://github.com/yangkai2g7k/yunbi-api-module"
   },
   "author": "Kai Yang <is.kai.yang@gmail.com>",
   "license": "ISC",
