@@ -11,11 +11,12 @@ class YunbiAPI {
         this.secret = secret;
         this.host = "https://yunbi.com/";
         this.USER_AGENT = "Yunbi API Client/0.0.1";
+        this.nonce = new nonce();
     }
 
     _getSignature(method, path, parameters = {}) {
 
-        parameters.tonce = parseInt(nonce() / 100);
+        parameters.tonce = parseInt(this.nonce() / 100);
         parameters.access_key = this.key;
 
         let paramString = Object.keys(parameters).sort(parameters).map(function (param) {
@@ -44,7 +45,7 @@ class YunbiAPI {
         });
     }
 
-    _privateRequest(method, path, data, callback, parameters) {
+    _privateRequest(method, path, parameters, data, callback) {
         method = method.toUpperCase();
         const {signature, paramString} = this._getSignature(method, path, parameters);
         let options = {
@@ -52,13 +53,13 @@ class YunbiAPI {
             path: path,
             method: method,
             headers: {
-                Key: this.key,
-                Sign: signature,
+                access_key: this.key,
+                signature: signature,
                 UserAgent: this.USER_AGENT
             }
         };
         if (method === "GET") {
-            options["url"] = `${this.host}/${this.path}?${paramString}`;
+            options["url"] = `${this.host}/${path}?${paramString}`;
         } else if (method === "POST") {
             options["form"] = parameters
         }
@@ -73,6 +74,9 @@ class YunbiAPI {
         };
         this._request(options, callback);
     }
+
+
+    //public api
 
     getTicker(marketId, callback) {
         this._publicRequest(`/api/v2/tickers/${marketId}.json`,{}, callback);
@@ -115,6 +119,30 @@ class YunbiAPI {
         this._publicRequest("/api/v2/k_with_pending_trades.json",parameters,callback);
     }
 
+    //private get api
+    getDeposits(currency,options,callback){
+        this._privateRequest("GET","/api/v2/deposits",{currency},{},callback);
+    }
+    getAccount(callback){
+        this._privateRequest("GET","/api/v2/members/me.json",{},{},callback);
+    }
+    getDeposit(txid,callback){
+        this._privateRequest("GET","/api/v2/deposit.json",{txid},{},callback);
+    }
+    getDepositAddress(currency,callback){
+        this._privateRequest("GET","/api/v2/deposit_address.json",{currency},{},callback);
+    }
+    getOrders(market,options,callback){
+        let parameters = Object.assign({market},options);
+        this._privateRequest("GET","/api/v2/orders.json",parameters,{},callback);
+    }
+    getOrder(id,callback){
+        this._privateRequest("GET","/api/v2/order.json",{id},{},callback);
+    }
+    getAccountTrades(market,options,callback){
+        let parameters = Object.assign({market},options);
+        this._privateRequest("GET","/api/v2/trades/my.json",parameters,{},callback);
+    }
 }
 
 module.exports = YunbiAPI;

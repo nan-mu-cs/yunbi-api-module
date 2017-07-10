@@ -29,6 +29,7 @@ var YunbiAPI = function () {
         this.secret = secret;
         this.host = "https://yunbi.com/";
         this.USER_AGENT = "Yunbi API Client/0.0.1";
+        this.nonce = new _nonce2.default();
     }
 
     _createClass(YunbiAPI, [{
@@ -37,7 +38,7 @@ var YunbiAPI = function () {
             var parameters = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 
-            parameters.tonce = parseInt((0, _nonce2.default)() / 100);
+            parameters.tonce = parseInt(this.nonce() / 100);
             parameters.access_key = this.key;
 
             var paramString = Object.keys(parameters).sort(parameters).map(function (param) {
@@ -68,7 +69,7 @@ var YunbiAPI = function () {
         }
     }, {
         key: "_privateRequest",
-        value: function _privateRequest(method, path, data, callback, parameters) {
+        value: function _privateRequest(method, path, parameters, data, callback) {
             method = method.toUpperCase();
 
             var _getSignature2 = this._getSignature(method, path, parameters),
@@ -80,13 +81,13 @@ var YunbiAPI = function () {
                 path: path,
                 method: method,
                 headers: {
-                    Key: this.key,
-                    Sign: signature,
+                    access_key: this.key,
+                    signature: signature,
                     UserAgent: this.USER_AGENT
                 }
             };
             if (method === "GET") {
-                options["url"] = this.host + "/" + this.path + "?" + paramString;
+                options["url"] = this.host + "/" + path + "?" + paramString;
             } else if (method === "POST") {
                 options["form"] = parameters;
             }
@@ -102,6 +103,9 @@ var YunbiAPI = function () {
             };
             this._request(options, callback);
         }
+
+        //public api
+
     }, {
         key: "getTicker",
         value: function getTicker(marketId, callback) {
@@ -151,6 +155,46 @@ var YunbiAPI = function () {
         value: function getKPendingTrades(market, trade_id, options, callback) {
             var parameters = Object.assign({}, { market: market, trade_id: trade_id }, options);
             this._publicRequest("/api/v2/k_with_pending_trades.json", parameters, callback);
+        }
+
+        //private get api
+
+    }, {
+        key: "getDeposits",
+        value: function getDeposits(currency, options, callback) {
+            this._privateRequest("GET", "/api/v2/deposits", { currency: currency }, {}, callback);
+        }
+    }, {
+        key: "getAccount",
+        value: function getAccount(callback) {
+            this._privateRequest("GET", "/api/v2/members/me.json", {}, {}, callback);
+        }
+    }, {
+        key: "getDeposit",
+        value: function getDeposit(txid, callback) {
+            this._privateRequest("GET", "/api/v2/deposit.json", { txid: txid }, {}, callback);
+        }
+    }, {
+        key: "getDepositAddress",
+        value: function getDepositAddress(currency, callback) {
+            this._privateRequest("GET", "/api/v2/deposit_address.json", { currency: currency }, {}, callback);
+        }
+    }, {
+        key: "getOrders",
+        value: function getOrders(market, options, callback) {
+            var parameters = Object.assign({ market: market }, options);
+            this._privateRequest("GET", "/api/v2/orders.json", parameters, {}, callback);
+        }
+    }, {
+        key: "getOrder",
+        value: function getOrder(id, callback) {
+            this._privateRequest("GET", "/api/v2/order.json", { id: id }, {}, callback);
+        }
+    }, {
+        key: "getAccountTrades",
+        value: function getAccountTrades(market, options, callback) {
+            var parameters = Object.assign({ market: market }, options);
+            this._privateRequest("GET", "/api/v2/trades/my.json", parameters, {}, callback);
         }
     }]);
 
