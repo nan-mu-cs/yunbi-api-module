@@ -51,7 +51,7 @@ class YunbiAPI {
             headers: {
                 Key: this.key,
                 Sign: signature,
-                "User-Agent": this.USER_AGENT
+                UserAgent: this.USER_AGENT
             }
         };
         if(method === "GET"){
@@ -61,7 +61,17 @@ class YunbiAPI {
         }
         this._request(options,callback);
     }
-
+    _publicRequest(path,parameters,callback){
+        const options = {
+            method: 'GET',
+            url: this.host+path,
+            qs: parameters
+        };
+        this._request(options,callback);
+    }
+    getTicker(callback){
+        this._publicRequest("/api/v2/tickers",{},callback);
+    }
 }
 
 module.exports = YunbiAPI;
