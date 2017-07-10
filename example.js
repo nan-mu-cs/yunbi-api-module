@@ -2,8 +2,9 @@
  * Created by kaiyan2 on 7/10/17.
  */
 var Yunbi = require("./distribution/index");
+var token = require("./token");
 
-var yunbi = new Yunbi();
+var yunbi = new Yunbi(token.accessKey,token.secretKey);
 
 // public API
 
