@@ -61,8 +61,9 @@ var YunbiAPI = function () {
                 if (!err && (typeof body === 'undefined' || body === null)) {
                     err = 'Empty response';
                 }
-
-                callback(err, body);
+                if (callback != 'undefined') {
+                    callback(err, body);
+                }
             });
         }
     }, {
@@ -102,6 +103,11 @@ var YunbiAPI = function () {
             this._request(options, callback);
         }
     }, {
+        key: "getTicker",
+        value: function getTicker(marketId, callback) {
+            this._publicRequest("/api/v2/tickers/" + marketId + ".json", {}, callback);
+        }
+    }, {
         key: "getAllTicker",
         value: function getAllTicker(callback) {
             this._publicRequest("/api/v2/tickers", {}, callback);
@@ -110,6 +116,41 @@ var YunbiAPI = function () {
         key: "getMarkets",
         value: function getMarkets(callback) {
             this._publicRequest("/api/v2/markets.json", {}, callback);
+        }
+    }, {
+        key: "getTimeStamp",
+        value: function getTimeStamp(callback) {
+            this._publicRequest("/api/v2/timestamp.json", {}, callback);
+        }
+    }, {
+        key: "getOrderBook",
+        value: function getOrderBook(market, options, callback) {
+            var parameters = Object.assign({}, { market: market }, options);
+            this._publicRequest("/api/v2/order_book.json", parameters, callback);
+        }
+    }, {
+        key: "getTrades",
+        value: function getTrades(market, options, callback) {
+            var parameters = Object.assign({}, { market: market }, options);
+            this._publicRequest("/api/v2/trades.json", parameters, callback);
+        }
+    }, {
+        key: "getDepth",
+        value: function getDepth(market, options, callback) {
+            var parameters = Object.assign({}, { market: market }, options);
+            this._publicRequest("/api/v2/depth.json", parameters, callback);
+        }
+    }, {
+        key: "getK",
+        value: function getK(market, options, callback) {
+            var parameters = Object.assign({}, { market: market }, options);
+            this._publicRequest("/api/v2/k.json", parameters, callback);
+        }
+    }, {
+        key: "getKPendingTrades",
+        value: function getKPendingTrades(market, trade_id, options, callback) {
+            var parameters = Object.assign({}, { market: market, trade_id: trade_id }, options);
+            this._publicRequest("/api/v2/k_with_pending_trades.json", parameters, callback);
         }
     }]);
 
