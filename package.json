@@ -1,6 +1,6 @@
 {
   "name": "yunbi-api-module",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "./distribution/index.js",
   "scripts": {
