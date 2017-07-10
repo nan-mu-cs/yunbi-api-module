@@ -69,8 +69,11 @@ class YunbiAPI {
         };
         this._request(options,callback);
     }
-    getTicker(callback){
+    getAllTicker(callback){
         this._publicRequest("/api/v2/tickers",{},callback);
+    }
+    getMarkets(callback){
+        this._publicRequest("/api/v2/markets.json",{},callback);
     }
 }
 
