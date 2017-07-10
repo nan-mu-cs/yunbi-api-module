@@ -33,10 +33,10 @@ var yunbi = new Yunbi(token.accessKey,token.secretKey);
 //     console.log(data);
 // });
 //
-// yunbi.getTrades("btccny",{},function (error,data) {
-//     console.log("getTrades");
-//     console.log(data);
-// });
+yunbi.getTrades("btccny",{},function (error,data) {
+    console.log("getTrades");
+    console.log(data);
+});
 //
 // yunbi.getDepth("btccny",{},function (error,data) {
 //     console.log("getDepth");
@@ -75,7 +75,7 @@ var yunbi = new Yunbi(token.accessKey,token.secretKey);
 //     console.log(data);
 // });
 
-// yunbi.getOrder("441738092",function (error,data) {
+// yunbi.getOrder("452437101",function (error,data) {
 //    console.log("getOrder");
 //    console.log(data);
 // });
@@ -94,7 +94,7 @@ var yunbi = new Yunbi(token.accessKey,token.secretKey);
 //     console.log(data);
 // });
 
-// yunbi.cancelOrder("452416228",function (error,data) {
+// yunbi.cancelOrder("452437101",function (error,data) {
 //    console.log("cancelOrder");
 //    console.log(data);
 // });

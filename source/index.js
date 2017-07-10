@@ -40,7 +40,7 @@ class YunbiAPI {
                 err = 'Empty response';
             }
             if (callback != 'undefined') {
-                callback(err, body);
+                callback(err, JSON.parse(body));
             }
         });
     }
